@@ -2,21 +2,23 @@ package communication;
 
 public class SantaCommunicator {
     private final int numberOfDaysToRest;
+    private final int numberOfDayBeforeChristmas;
 
-    public SantaCommunicator(int numberOfDaysToRest) {
+    private SantaCommunicator(int numberOfDaysToRest, int numberOfDayBeforeChristmas) {
         this.numberOfDaysToRest = numberOfDaysToRest;
+        this.numberOfDayBeforeChristmas = numberOfDayBeforeChristmas;
     }
 
-    public String composeMessage(String reindeerName, String currentLocation, int numbersOfDaysForComingBack, int numberOfDaysBeforeChristmas) {
-        var daysBeforeReturn = daysBeforeReturn(numbersOfDaysForComingBack, numberOfDaysBeforeChristmas);
+    public String composeMessage(ReindeerInfo reindeerInfo) {
+        var daysBeforeReturn = daysBeforeReturn(reindeerInfo.numbersOfDaysForComingBack(), this.numberOfDayBeforeChristmas);
 
-        return "Dear " + reindeerName + ", please return from " + currentLocation +
-                " in " + daysBeforeReturn + " day(s) to be ready and rest before Christmas.";
+        return "Dear " + reindeerInfo.name() + ", please return from " + reindeerInfo.currentLocation() +
+               " in " + daysBeforeReturn + " day(s) to be ready and rest before Christmas.";
     }
 
-    public boolean isOverdue(String reindeerName, String currentLocation, int numbersOfDaysForComingBack, int numberOfDaysBeforeChristmas, Logger logger) {
-        if (daysBeforeReturn(numbersOfDaysForComingBack, numberOfDaysBeforeChristmas) <= 0) {
-            logger.log("Overdue for " + reindeerName + " located " + currentLocation + ".");
+    public boolean isOverdue(ReindeerInfo reindeerInfo, Logger logger) {
+        if (daysBeforeReturn(reindeerInfo.numbersOfDaysForComingBack(), this.numberOfDayBeforeChristmas) <= 0) {
+            logger.log("Overdue for " + reindeerInfo.name() + " located " + reindeerInfo.currentLocation() + ".");
             return true;
         }
         return false;
@@ -24,5 +26,24 @@ public class SantaCommunicator {
 
     private int daysBeforeReturn(int numbersOfDaysForComingBack, int numberOfDaysBeforeChristmas) {
         return numberOfDaysBeforeChristmas - numbersOfDaysForComingBack - numberOfDaysToRest;
+    }
+
+    public static class Builder {
+        private int numberOfDaysToRest;
+        private int numberOfDayBeforeChristmas;
+
+        public SantaCommunicator build() {
+            return new SantaCommunicator(numberOfDaysToRest, numberOfDayBeforeChristmas);
+        }
+
+        public Builder daysToRest(int numberOfDaysToRest) {
+            this.numberOfDaysToRest = numberOfDaysToRest;
+            return this;
+        }
+
+        public Builder daysBeforeChristmas(int numberOfDayBeforeChristmas) {
+            this.numberOfDayBeforeChristmas = numberOfDayBeforeChristmas;
+            return this;
+        }
     }
 }
