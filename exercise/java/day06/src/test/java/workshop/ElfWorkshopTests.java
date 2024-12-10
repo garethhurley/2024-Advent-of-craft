@@ -8,10 +8,11 @@ public class ElfWorkshopTests {
     @Test
     public void addTask_Should_Add_Task() {
         var workshop = new ElfWorkshop();
-        workshop.addTask("Build toy train");
+        workshop.addTask("Build toy train");  //FIXME: repeated magic string. Extract as variable.
         assertThat(workshop.getTaskList()).contains("Build toy train");
     }
 
+    //FIXME: duplicated test case. Same as 'addTask_Should_Add_Task'.
     @Test
     public void addTask_Should_Add_Craft_Dollhouse_Task() {
         var workshop = new ElfWorkshop();
@@ -19,6 +20,7 @@ public class ElfWorkshopTests {
         assertThat(workshop.getTaskList()).contains("Craft dollhouse");
     }
 
+    //FIXME: duplicated test case. Same as 'addTask_Should_Add_Task'.
     @Test
     public void addTask_Should_Add_Paint_Bicycle_Task() {
         var workshop = new ElfWorkshop();
@@ -28,7 +30,7 @@ public class ElfWorkshopTests {
 
     @Test
     public void addTask_Should_Handle_Empty_Tasks_Correctly() {
-        var workshop = new ElfWorkshop();
+        var workshop = new ElfWorkshop();  //FIXME: repeated initialization of workshop. Extract as field with setup
         workshop.addTask("");
         assertThat(workshop.getTaskList()).isEmpty();
     }
