@@ -7,6 +7,7 @@ import java.util.Optional;
 import static java.lang.String.format;
 
 public class Gift {
+    public static final String RECOMMENDED_AGE = "recommendedAge";
     private final String name;
     private final double weight;
     private final String color;
@@ -34,7 +35,7 @@ public class Gift {
     }
 
     public int getRecommendedAge() {
-        return getAttribute("recommendedAge")
+        return getAttribute(RECOMMENDED_AGE)
                 .map(Integer::parseInt)
                 .orElse(0);
     }
