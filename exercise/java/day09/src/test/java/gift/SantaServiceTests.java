@@ -1,27 +1,37 @@
 package gift;
 
 import org.junit.jupiter.api.Test;
+
+import static gift.Behavior.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SantaServiceTests {
 
+    private static final GiftRequest FEASIBLE_GIFT = createGift(true);
+    private static final GiftRequest INFEASIBLE_GIFT = createGift(false);
+
     private final SantaService service = new SantaService();
 
     @Test
-    void requestIsApprovedForNiceChildWithFeasibleGift() {
-        Child niceChild = new Child("Alice", "Thomas", 9, Behavior.NICE, new GiftRequest("Bicycle", true, Priority.NICE_TO_HAVE));
-        assertThat(service.evaluateRequest(niceChild)).isTrue();
+    void niceChildWithFeasibleGift_willReceiveTheirGiftRequest() {
+        assertThat(service.isRequestGranted(createChild(NICE, FEASIBLE_GIFT))).isTrue();
     }
 
     @Test
-    void requestIsDeniedForNaughtyChild() {
-        Child naughtyChild = new Child("Noa", "Thierry", 6, Behavior.NAUGHTY, new GiftRequest("SomeToy", true, Priority.DREAM));
-        assertThat(service.evaluateRequest(naughtyChild)).isFalse();
+    void naughtyChild_willNotReceiveTheirGiftRequest() {
+        assertThat(service.isRequestGranted(createChild(NAUGHTY, FEASIBLE_GIFT))).isFalse();
     }
 
     @Test
-    void requestIsDeniedForNiceChildWithInfeasibleGift() {
-        Child niceChildWithInfeasibleGift = new Child("Charlie", "Joie", 3, Behavior.NICE, new GiftRequest("AnotherToy", false, Priority.DREAM));
-        assertThat(service.evaluateRequest(niceChildWithInfeasibleGift)).isFalse();
+    void niceChildWithInfeasibleGift_willNotReceiveTheirGiftRequest() {
+        assertThat(service.isRequestGranted(createChild(NICE, INFEASIBLE_GIFT))).isFalse();
+    }
+
+    private static Child createChild(Behavior behavior, GiftRequest gift) {
+        return new Child("Alice", "Thomas", 9, behavior, gift);
+    }
+
+    private static GiftRequest createGift(boolean isFeasibleGift) {
+        return new GiftRequest("Bicycle", isFeasibleGift, Priority.NICE_TO_HAVE);
     }
 }
