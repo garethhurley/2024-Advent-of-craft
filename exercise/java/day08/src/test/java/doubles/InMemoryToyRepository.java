@@ -5,7 +5,6 @@ import domain.ToyRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InMemoryToyRepository implements ToyRepository {
     private final List<Toy> toys = new ArrayList<>();

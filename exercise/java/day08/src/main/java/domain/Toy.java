@@ -1,16 +1,25 @@
 package domain;
 
 public class Toy {
-    public enum State {
-        UNASSIGNED, IN_PRODUCTION, COMPLETED
-    }
 
+    public enum State {
+        UNASSIGNED, IN_PRODUCTION, COMPLETED;
+    }
     private final String name;
+
     private State state;
 
     public Toy(String name, State state) {
         this.name = name;
         this.state = state;
+    }
+
+    public boolean moveToProduction() {
+        if(this.state == State.UNASSIGNED) {
+            this.state = State.IN_PRODUCTION;
+            return true;
+        }
+        return false;
     }
 
     public String getName() {
@@ -21,7 +30,4 @@ public class Toy {
         return state;
     }
 
-    public void setState(State state) {
-        this.state = state;
-    }
 }
